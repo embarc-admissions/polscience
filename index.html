@@ -479,6 +479,80 @@ body::before {
 .pill-green { background: var(--green-bg); color: var(--green); }
 .pill-warn { background: var(--warn-bg); color: var(--warn); }
 
+/* ── Learning / Resource cards ── */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+@media (max-width: 640px) { .resource-grid { grid-template-columns: 1fr; } }
+
+.res-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.res-card:hover { border-color: var(--fg3); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.res-type-bar { height: 3px; flex-shrink: 0; }
+.res-body { padding: 14px 16px; display: flex; flex-direction: column; flex: 1; gap: 6px; }
+.res-meta { display: flex; align-items: center; gap: 8px; }
+.res-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.badge-video   { background: var(--accent-bg);  color: var(--accent); }
+.badge-article { background: var(--blue-bg);    color: var(--blue); }
+.badge-podcast { background: var(--green-bg);   color: var(--green); }
+.badge-book    { background: var(--gold-bg);    color: var(--gold); }
+.res-duration { font-size: 0.68rem; color: var(--fg3); font-family: 'IBM Plex Mono', monospace; }
+.res-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.3;
+}
+.res-source { font-size: 0.7rem; color: var(--fg3); font-weight: 600; }
+.res-desc { font-size: 0.76rem; color: var(--fg2); line-height: 1.6; flex: 1; }
+.res-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--blue);
+  text-decoration: none;
+}
+.res-link:hover { text-decoration: underline; }
+.res-card[hidden] { display: none !important; }
+
+/* ── Filter buttons ── */
+.filter-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--fg2);
+  padding: 5px 12px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.filter-btn:hover { background: var(--border); color: var(--fg); }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 /* ── Sidebar collapse on mobile ── */
 @media (max-width: 720px) {
   .layout { flex-direction: column; overflow: visible; }
@@ -519,6 +593,7 @@ body::before {
       <button class="nav-item" onclick="show('systems')"><span class="nav-dot dot-green"></span> Systems of Govt</button>
       <button class="nav-item" onclick="show('history')"><span class="nav-dot dot-red"></span> Historical Events</button>
       <button class="nav-item" onclick="show('careers')"><span class="nav-dot dot-green"></span> Careers</button>
+      <button class="nav-item" onclick="show('learning')"><span class="nav-dot dot-blue"></span> Learning</button>
     </div>
   </nav>
 
@@ -1266,6 +1341,230 @@ body::before {
       </div>
     </div>
 
+    <!-- ════════ LEARNING ════════ -->
+    <div class="view" id="view-learning">
+      <div class="view-header">
+        <div class="view-eyebrow">Study Resources</div>
+        <div class="view-title">Videos &amp; Articles</div>
+        <div class="view-desc">Curated lectures, documentaries, podcasts, and reading to deepen your understanding — from beginner explainers to university-level analysis.</div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div id="filter-tabs" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;">
+        <button class="filter-btn active" onclick="filterResources('all', this)">All</button>
+        <button class="filter-btn" onclick="filterResources('video', this)">📹 Videos</button>
+        <button class="filter-btn" onclick="filterResources('article', this)">📄 Articles</button>
+        <button class="filter-btn" onclick="filterResources('podcast', this)">🎙 Podcasts</button>
+        <button class="filter-btn" onclick="filterResources('book', this)">📚 Books</button>
+      </div>
+
+      <!-- ── IR Theory ── -->
+      <div class="section-head">International Relations</div>
+      <div class="resource-grid">
+
+        <div class="res-card" data-type="video">
+          <div class="res-type-bar" style="background:var(--accent)"></div>
+          <div class="res-body">
+            <div class="res-meta"><span class="res-badge badge-video">Video</span><span class="res-duration">18 min</span></div>
+            <div class="res-title">Introduction to International Relations</div>
+            <div class="res-source">Yale · Open Yale Courses</div>
+            <div class="res-desc">Professor Smith's introductory lecture covering anarchy, power, and the major IR theories — ideal starting point for newcomers.</div>
+            <a class="res-link" href="https://www.youtube.com/results?search_query=yale+introduction+international+relations+lecture" target="_blank">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="res-card" data-type="video">
+          <div class="res-type-bar" style="background:var(--accent)"></div>
+          <div class="res-body">
+            <div class="res-meta"><span class="res-badge badge-video">Video</span><span class="res-duration">12 min</span></div>
+            <div class="res-title">Realism vs Liberalism in IR</div>
+            <div class="res-source">Crash Course · Government &amp; Politics</div>
+            <div class="res-desc">Side-by-side comparison of the two dominant IR paradigms with real-world examples. Clear, fast-paced, and great for revision.</div>
+            <a class="res-link" href="https://www.youtube.com/results?search_query=crash+course+realism+liberalism+international+relations" target="_blank">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="res-card" data-type="article">
+          <div class="res-type-bar" style="background:var(--blue)"></div>
+          <div class="res-body">
+            <div class="res-meta"><span class="res-badge badge-article">Article</span><span class="res-duration">20 min read</span></div>
+            <div class="res-title">What Is Power in International Relations?</div>
+            <div class="res-source">E-International Relations</div>
+            <div class="res-desc">Accessible academic article distinguishing hard, soft, and smart power with case studies from Nye's foundational work.</div>
+            <a class="res-link" href="https://www.e-ir.info" target="_blank">Read on e-ir.info ↗</a>
+          </div>
+        </div>
+
+        <div class="res-card" data-type="podcast">
+          <div class="res-type-bar" style="background:var(--green)"></div>
+          <div class="res-body">
+            <div class="res-meta"><span class="res-badge badge-podcast">Podcast</span><span class="res-duration">~45 min</span></div>
+            <div class="res-title">The IR Podcast</div>
+            <div class="res-source">E-International Relations</div>
+            <div class="res-desc">Interview-based episodes with leading scholars — covers theory, case studies, and current affairs. Good for commutes and revision walks.</div>
+            <a class="res-link" href="https://www.e-ir.info/ir-podcast/" target="_blank">Listen on e-ir.info ↗</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Political Theory ── -->
+      <div class="section-gap">
+        <div class="section-head">Political Theory &amp; Philosophy</div>
+        <div class="resource-grid">
+
+          <div class="res-card" data-type="video">
+            <div class="res-type-bar" style="background:var(--accent)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-video">Video</span><span class="res-duration">25 min</span></div>
+              <div class="res-title">Justice: What's the Right Thing to Do?</div>
+              <div class="res-source">Harvard · Michael Sandel</div>
+              <div class="res-desc">Episode 1 of Harvard's famous Justice lecture series. Sandel opens with trolley problems and moves into Bentham's utilitarianism. Compulsive viewing.</div>
+              <a class="res-link" href="https://www.youtube.com/results?search_query=michael+sandel+justice+harvard+episode+1" target="_blank">Watch on YouTube ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="video">
+            <div class="res-type-bar" style="background:var(--accent)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-video">Video</span><span class="res-duration">8 min</span></div>
+              <div class="res-title">John Rawls &amp; the Veil of Ignorance</div>
+              <div class="res-source">BBC Radio 4 · In Our Time</div>
+              <div class="res-desc">Concise explainer of Rawls' thought experiment and its implications for distributive justice — perfect pre-essay viewing.</div>
+              <a class="res-link" href="https://www.youtube.com/results?search_query=rawls+veil+of+ignorance+explained" target="_blank">Watch on YouTube ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="article">
+            <div class="res-type-bar" style="background:var(--blue)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-article">Article</span><span class="res-duration">15 min read</span></div>
+              <div class="res-title">Hobbes, Locke &amp; Rousseau — Comparing Social Contract Theories</div>
+              <div class="res-source">Internet Encyclopedia of Philosophy</div>
+              <div class="res-desc">Scholarly yet readable overview comparing the three foundational social contract thinkers — useful for A-level and first-year university.</div>
+              <a class="res-link" href="https://iep.utm.edu/soc-cont/" target="_blank">Read on IEP ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="book">
+            <div class="res-type-bar" style="background:var(--gold)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-book">Book</span><span class="res-duration">Introductory</span></div>
+              <div class="res-title">An Introduction to Political Philosophy</div>
+              <div class="res-source">Jonathan Wolff (Oxford UP)</div>
+              <div class="res-desc">The standard undergraduate primer. Covers the state, justice, democracy, and liberty with clarity and depth. A-level students will find it very accessible.</div>
+              <a class="res-link" href="https://global.oup.com/academic/product/an-introduction-to-political-philosophy-9780199658015" target="_blank">View on OUP ↗</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Comparative Politics ── -->
+      <div class="section-gap">
+        <div class="section-head">Comparative Politics &amp; Democracy</div>
+        <div class="resource-grid">
+
+          <div class="res-card" data-type="video">
+            <div class="res-type-bar" style="background:var(--accent)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-video">Video</span><span class="res-duration">Documentary</span></div>
+              <div class="res-title">The Century of the Self</div>
+              <div class="res-source">BBC · Adam Curtis (2002)</div>
+              <div class="res-desc">Four-part documentary on how Freudian ideas shaped mass democracy, public relations, and political power in the 20th century. Essential viewing.</div>
+              <a class="res-link" href="https://www.youtube.com/results?search_query=the+century+of+the+self+adam+curtis+full" target="_blank">Watch on YouTube ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="article">
+            <div class="res-type-bar" style="background:var(--blue)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-article">Article</span><span class="res-duration">10 min read</span></div>
+              <div class="res-title">How Democracies Die — A Summary</div>
+              <div class="res-source">Foreign Affairs</div>
+              <div class="res-desc">Based on Levitsky &amp; Ziblatt's landmark book: how elected leaders erode democratic norms from within rather than through coups.</div>
+              <a class="res-link" href="https://www.foreignaffairs.com" target="_blank">Read on Foreign Affairs ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="podcast">
+            <div class="res-type-bar" style="background:var(--green)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-podcast">Podcast</span><span class="res-duration">~30 min</span></div>
+              <div class="res-title">Politics Weekly America / UK</div>
+              <div class="res-source">The Guardian</div>
+              <div class="res-desc">Weekly political analysis from The Guardian's correspondents. Keeps you current on US and UK political developments with expert commentary.</div>
+              <a class="res-link" href="https://www.theguardian.com/news/series/politics-weekly-america" target="_blank">Listen on theguardian.com ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="book">
+            <div class="res-type-bar" style="background:var(--gold)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-book">Book</span><span class="res-duration">Intermediate</span></div>
+              <div class="res-title">Why Nations Fail</div>
+              <div class="res-source">Acemoglu &amp; Robinson</div>
+              <div class="res-desc">Argues that inclusive political and economic institutions — not geography or culture — explain prosperity and state failure. A compelling comparative study.</div>
+              <a class="res-link" href="https://www.why-nations-fail.com" target="_blank">View website ↗</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Current Affairs ── -->
+      <div class="section-gap">
+        <div class="section-head">Current Affairs &amp; Ongoing Learning</div>
+        <div class="resource-grid">
+
+          <div class="res-card" data-type="article">
+            <div class="res-type-bar" style="background:var(--blue)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-article">Article</span><span class="res-duration">Daily</span></div>
+              <div class="res-title">The Economist — Politics Section</div>
+              <div class="res-source">The Economist</div>
+              <div class="res-desc">Rigorous weekly analysis of global politics. The "Briefing" and "Leaders" sections apply political science frameworks to live events without jargon.</div>
+              <a class="res-link" href="https://www.economist.com/politics" target="_blank">Read on economist.com ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="podcast">
+            <div class="res-type-bar" style="background:var(--green)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-podcast">Podcast</span><span class="res-duration">~20 min</span></div>
+              <div class="res-title">The Intelligence</div>
+              <div class="res-source">The Economist</div>
+              <div class="res-desc">Daily Economist podcast covering politics, business, and ideas worldwide. Excellent for building current affairs awareness alongside your theory study.</div>
+              <a class="res-link" href="https://www.economist.com/podcasts/the-intelligence" target="_blank">Listen on economist.com ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="video">
+            <div class="res-type-bar" style="background:var(--accent)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-video">Video</span><span class="res-duration">10–20 min</span></div>
+              <div class="res-title">TLDR News — EU, Global, UK</div>
+              <div class="res-source">TLDR News · YouTube</div>
+              <div class="res-desc">Well-researched, balanced explainer videos on elections, international crises, and policy debates. Great gateway for current events without the noise.</div>
+              <a class="res-link" href="https://www.youtube.com/results?search_query=TLDR+News+politics" target="_blank">Watch on YouTube ↗</a>
+            </div>
+          </div>
+
+          <div class="res-card" data-type="article">
+            <div class="res-type-bar" style="background:var(--blue)"></div>
+            <div class="res-body">
+              <div class="res-meta"><span class="res-badge badge-article">Article</span><span class="res-duration">Weekly</span></div>
+              <div class="res-title">Foreign Affairs</div>
+              <div class="res-source">Council on Foreign Relations</div>
+              <div class="res-desc">The flagship journal of international affairs. Long-form analysis from scholars and practitioners — essential for IR students. Free articles available online.</div>
+              <a class="res-link" href="https://www.foreignaffairs.com" target="_blank">Read on foreignaffairs.com ↗</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -1275,6 +1574,14 @@ function show(id) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('view-' + id).classList.add('active');
   event.currentTarget.classList.add('active');
+}
+
+function filterResources(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.res-card').forEach(card => {
+    card.hidden = (type !== 'all' && card.dataset.type !== type);
+  });
 }
 
 function toggleTheme() {
