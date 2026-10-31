@@ -1,0 +1,1292 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Political Science Dashboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+/*
+  Layout: sidebar nav + main content grid; cards at different densities
+  Subject: political science concepts, data, glossary, key thinkers
+*/
+:root {
+  --bg:       #F2F0EB;
+  --surface:  #FAFAF7;
+  --surface2: #ECEAE4;
+  --border:   #D8D4CC;
+  --fg:       #1A1916;
+  --fg2:      #5C5952;
+  --fg3:      #9A948A;
+  --accent:   #8B2323;
+  --accent-bg:#F7EDED;
+  --blue:     #1B3A6B;
+  --blue-bg:  #E8EDF5;
+  --gold:     #7A5C00;
+  --gold-bg:  #F5F0E0;
+  --green:    #1A5C3A;
+  --green-bg: #E5F2EB;
+  --warn:     #8B5E00;
+  --warn-bg:  #F5EED8;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:       #13120F;
+    --surface:  #1C1B17;
+    --surface2: #252420;
+    --border:   #35332C;
+    --fg:       #F0EDE6;
+    --fg2:      #A09990;
+    --fg3:      #5C5852;
+    --accent:   #D45050;
+    --accent-bg:#2E1414;
+    --blue:     #7BAAD4;
+    --blue-bg:  #0F1E30;
+    --gold:     #C9A940;
+    --gold-bg:  #241E0A;
+    --green:    #5CB88A;
+    --green-bg: #0A1E12;
+    --warn:     #D4A030;
+    --warn-bg:  #221800;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:       #13120F;
+  --surface:  #1C1B17;
+  --surface2: #252420;
+  --border:   #35332C;
+  --fg:       #F0EDE6;
+  --fg2:      #A09990;
+  --fg3:      #5C5852;
+  --accent:   #D45050;
+  --accent-bg:#2E1414;
+  --blue:     #7BAAD4;
+  --blue-bg:  #0F1E30;
+  --gold:     #C9A940;
+  --gold-bg:  #241E0A;
+  --green:    #5CB88A;
+  --green-bg: #0A1E12;
+  --warn:     #D4A030;
+  --warn-bg:  #221800;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar ── */
+.topbar {
+  background: var(--fg);
+  color: var(--bg);
+  padding: 0 max(20px, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 52px;
+  flex-shrink: 0;
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 50;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 60;
+  background: var(--fg);
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar-logo {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.topbar-logo svg { width: 16px; height: 16px; fill: #fff; }
+.topbar-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--bg);
+}
+.topbar-subtitle {
+  font-size: 0.7rem;
+  opacity: 0.55;
+  color: var(--bg);
+  margin-top: 1px;
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.theme-toggle {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  color: var(--bg);
+  padding: 5px 10px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.theme-toggle:hover { background: rgba(255,255,255,0.22); }
+
+/* ── Layout ── */
+.layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+.sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 12px 0 24px;
+}
+.sidebar-section {
+  padding: 0 12px;
+  margin-top: 16px;
+}
+.sidebar-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg3);
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--fg2);
+  transition: all 0.12s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.nav-item:hover { background: var(--surface2); color: var(--fg); }
+.nav-item.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+.nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-red { background: var(--accent); }
+.dot-blue { background: var(--blue); }
+.dot-gold { background: var(--gold); }
+.dot-green { background: var(--green); }
+
+/* ── Main ── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px max(20px, env(safe-area-inset-right, 0px)) 40px max(20px, env(safe-area-inset-left, 0px));
+}
+.view { display: none; }
+.view.active { display: block; }
+
+.view-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.view-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.view-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.view-desc {
+  font-size: 0.83rem;
+  color: var(--fg2);
+  margin-top: 6px;
+  max-width: 60ch;
+}
+
+/* ── Grid layouts ── */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-auto { grid-template-columns: 1fr; }
+}
+
+.section-gap { margin-top: 28px; }
+.section-head {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg3);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-head::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── Cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.card-sm { padding: 12px 14px; }
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg3);
+  margin-bottom: 4px;
+}
+.stat-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+  line-height: 1;
+}
+.stat-val.accent { color: var(--accent); }
+.stat-val.blue { color: var(--blue); }
+.stat-val.gold { color: var(--gold); }
+.stat-val.green { color: var(--green); }
+.stat-sub {
+  font-size: 0.72rem;
+  color: var(--fg3);
+  margin-top: 4px;
+}
+
+/* ── Concept cards ── */
+.concept-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.concept-card:hover { border-color: var(--fg3); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.concept-stripe {
+  height: 3px;
+}
+.concept-body { padding: 14px 16px; }
+.concept-term {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 6px;
+}
+.concept-def {
+  font-size: 0.78rem;
+  color: var(--fg2);
+  line-height: 1.6;
+}
+.concept-tag {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* ── Bar chart ── */
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-label { font-size: 0.75rem; color: var(--fg2); width: 140px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 8px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 999px; }
+.bar-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--fg3); width: 36px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+/* ── Thinker cards ── */
+.thinker-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  gap: 14px;
+}
+.thinker-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--surface2);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--fg2);
+}
+.thinker-name {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 2px;
+}
+.thinker-dates { font-size: 0.68rem; color: var(--fg3); margin-bottom: 6px; }
+.thinker-work {
+  font-size: 0.75rem;
+  color: var(--fg2);
+  line-height: 1.55;
+}
+.thinker-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-top: 8px;
+  margin-right: 4px;
+}
+
+/* ── Timeline ── */
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 6px; bottom: 6px;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item { position: relative; margin-bottom: 20px; }
+.timeline-dot {
+  position: absolute;
+  left: -17px; top: 4px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  background: var(--accent);
+}
+.timeline-item.blue .timeline-dot { background: var(--blue); }
+.timeline-item.gold .timeline-dot { background: var(--gold); }
+.timeline-item.green .timeline-dot { background: var(--green); }
+.timeline-year {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--fg3);
+  margin-bottom: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.timeline-event {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 3px;
+}
+.timeline-desc { font-size: 0.75rem; color: var(--fg2); line-height: 1.5; }
+
+/* ── Table ── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--fg3);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--border);
+}
+.data-table td {
+  font-size: 0.8rem;
+  color: var(--fg2);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--surface2); }
+.data-table td:first-child { color: var(--fg); font-weight: 500; }
+.mono { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+
+/* ── Pills ── */
+.pill {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.pill-red { background: var(--accent-bg); color: var(--accent); }
+.pill-blue { background: var(--blue-bg); color: var(--blue); }
+.pill-gold { background: var(--gold-bg); color: var(--gold); }
+.pill-green { background: var(--green-bg); color: var(--green); }
+.pill-warn { background: var(--warn-bg); color: var(--warn); }
+
+/* ── Sidebar collapse on mobile ── */
+@media (max-width: 720px) {
+  .layout { flex-direction: column; overflow: visible; }
+  .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); overflow: visible; padding: 8px 0; display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 12px; }
+  .sidebar-section { margin: 0; }
+  .sidebar-label { display: none; }
+  .nav-item { padding: 6px 10px; font-size: 0.78rem; white-space: nowrap; }
+  .main { padding: 16px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); }
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 16 16"><path d="M8 1L1 5v6l7 4 7-4V5L8 1zm0 1.5L14 6v4.5L8 14 2 10.5V6L8 2.5z"/></svg>
+    </div>
+    <div>
+      <div class="topbar-title">PoliSci Dashboard</div>
+      <div class="topbar-subtitle">Political Science Reference</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-toggle" onclick="toggleTheme()">◐ Theme</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Core</div>
+      <button class="nav-item active" onclick="show('overview')"><span class="nav-dot dot-red"></span> Overview</button>
+      <button class="nav-item" onclick="show('concepts')"><span class="nav-dot dot-blue"></span> Key Concepts</button>
+      <button class="nav-item" onclick="show('thinkers')"><span class="nav-dot dot-gold"></span> Thinkers</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Data</div>
+      <button class="nav-item" onclick="show('systems')"><span class="nav-dot dot-green"></span> Systems of Govt</button>
+      <button class="nav-item" onclick="show('history')"><span class="nav-dot dot-red"></span> Historical Events</button>
+      <button class="nav-item" onclick="show('careers')"><span class="nav-dot dot-green"></span> Careers</button>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- ════════ OVERVIEW ════════ -->
+    <div class="view active" id="view-overview">
+      <div class="view-header">
+        <div class="view-eyebrow">Political Science</div>
+        <div class="view-title">Overview &amp; Core Branches</div>
+        <div class="view-desc">The scientific study of politics, power, governance, and political behaviour across states and international systems.</div>
+      </div>
+
+      <div class="grid-3">
+        <div class="stat-card">
+          <div class="stat-label">UN Member States</div>
+          <div class="stat-val blue">193</div>
+          <div class="stat-sub">Sovereign nations (2024)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Democracies</div>
+          <div class="stat-val green">89</div>
+          <div class="stat-sub">Approx. full democracies (EIU)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Authoritarian Regimes</div>
+          <div class="stat-val accent">59</div>
+          <div class="stat-sub">Classified authoritarian (V-Dem)</div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Five Branches of Political Science</div>
+        <div class="grid-2">
+          <div class="card">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div style="width:36px;height:36px;background:var(--accent-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-weight:700;font-size:0.85rem;">CP</div>
+              <div>
+                <div style="font-family:'Libre Baskerville',serif;font-size:0.9rem;font-weight:700;color:var(--fg);margin-bottom:4px;">Comparative Politics</div>
+                <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Examines political systems, institutions, and behaviour across different countries to identify patterns and causes of political outcomes.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div style="width:36px;height:36px;background:var(--blue-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--blue);font-weight:700;font-size:0.85rem;">IR</div>
+              <div>
+                <div style="font-family:'Libre Baskerville',serif;font-size:0.9rem;font-weight:700;color:var(--fg);margin-bottom:4px;">International Relations</div>
+                <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Studies interactions between states, international organisations, non-state actors, and the global power structures shaping world affairs.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div style="width:36px;height:36px;background:var(--gold-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);font-weight:700;font-size:0.85rem;">PT</div>
+              <div>
+                <div style="font-family:'Libre Baskerville',serif;font-size:0.9rem;font-weight:700;color:var(--fg);margin-bottom:4px;">Political Theory</div>
+                <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Engages with philosophical questions about justice, rights, liberty, legitimacy, and the proper basis of political authority and obligation.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div style="width:36px;height:36px;background:var(--green-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--green);font-weight:700;font-size:0.85rem;">PP</div>
+              <div>
+                <div style="font-family:'Libre Baskerville',serif;font-size:0.9rem;font-weight:700;color:var(--fg);margin-bottom:4px;">Public Policy</div>
+                <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Analyses how governments design, implement, and evaluate policies to address public problems, and examines their intended and unintended effects.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div style="width:36px;height:36px;background:var(--accent-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-weight:700;font-size:0.8rem;">APB</div>
+              <div>
+                <div style="font-family:'Libre Baskerville',serif;font-size:0.9rem;font-weight:700;color:var(--fg);margin-bottom:4px;">American / British Politics</div>
+                <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">In-depth study of specific national political systems, including electoral behaviour, legislative processes, and executive power structures.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div style="width:36px;height:36px;background:var(--blue-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--blue);font-weight:700;font-size:0.85rem;">PE</div>
+              <div>
+                <div style="font-family:'Libre Baskerville',serif;font-size:0.9rem;font-weight:700;color:var(--fg);margin-bottom:4px;">Political Economy</div>
+                <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Studies the relationship between political processes and economic systems — how power shapes markets and how markets shape political behaviour.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Core Analytical Questions</div>
+        <div class="card">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--accent);width:20px;flex-shrink:0;margin-top:1px;">01</div>
+              <div style="font-size:0.82rem;color:var(--fg2);"><strong style="color:var(--fg)">Who governs?</strong> — Which individuals, groups, or institutions exercise political power, and under what conditions?</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--blue);width:20px;flex-shrink:0;margin-top:1px;">02</div>
+              <div style="font-size:0.82rem;color:var(--fg2);"><strong style="color:var(--fg)">Who gets what?</strong> — How are political resources, rights, and public goods distributed across society? (Lasswell's definition)</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--gold);width:20px;flex-shrink:0;margin-top:1px;">03</div>
+              <div style="font-size:0.82rem;color:var(--fg2);"><strong style="color:var(--fg)">Why do states behave as they do?</strong> — How do domestic factors, institutions, and international pressures shape state action?</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--green);width:20px;flex-shrink:0;margin-top:1px;">04</div>
+              <div style="font-size:0.82rem;color:var(--fg2);"><strong style="color:var(--fg)">What is legitimate authority?</strong> — On what basis do governments claim and maintain the right to rule?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ CONCEPTS ════════ -->
+    <div class="view" id="view-concepts">
+      <div class="view-header">
+        <div class="view-eyebrow">Theory &amp; Vocabulary</div>
+        <div class="view-title">Key Concepts</div>
+        <div class="view-desc">Foundational terms and ideas every student of political science must master.</div>
+      </div>
+
+      <div class="section-head">Theories of International Relations</div>
+      <div class="grid-auto">
+        <div class="concept-card">
+          <div class="concept-stripe" style="background:var(--accent)"></div>
+          <div class="concept-body">
+            <div class="concept-term">Realism</div>
+            <div class="concept-def">States are the primary actors in an anarchic world and rationally pursue power and security as their main interests. War is always possible; cooperation is fragile.</div>
+            <span class="concept-tag" style="background:var(--accent-bg);color:var(--accent)">IR Theory</span>
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-stripe" style="background:var(--blue)"></div>
+          <div class="concept-body">
+            <div class="concept-term">Liberalism</div>
+            <div class="concept-def">International institutions, trade, and democracy reduce conflict. Interdependence raises the cost of war. IGOs create frameworks for durable cooperation.</div>
+            <span class="concept-tag" style="background:var(--blue-bg);color:var(--blue)">IR Theory</span>
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-stripe" style="background:var(--gold)"></div>
+          <div class="concept-body">
+            <div class="concept-term">Constructivism</div>
+            <div class="concept-def">State interests and identities are socially constructed through interaction. Norms, ideas, and shared beliefs shape behaviour as much as material power.</div>
+            <span class="concept-tag" style="background:var(--gold-bg);color:var(--gold)">IR Theory</span>
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-stripe" style="background:var(--green)"></div>
+          <div class="concept-body">
+            <div class="concept-term">Marxism / Critical Theory</div>
+            <div class="concept-def">International politics is driven by class interests and capitalist structures. Dominant states shape the global system to reproduce economic inequalities.</div>
+            <span class="concept-tag" style="background:var(--green-bg);color:var(--green)">IR Theory</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Domestic Politics &amp; Institutions</div>
+        <div class="grid-auto">
+          <div class="concept-card">
+            <div class="concept-stripe" style="background:var(--blue)"></div>
+            <div class="concept-body">
+              <div class="concept-term">Sovereignty</div>
+              <div class="concept-def">The supreme authority of a state within its territorial borders. Both internal (monopoly on force) and external (recognition by other states) dimensions matter.</div>
+              <span class="concept-tag" style="background:var(--blue-bg);color:var(--blue)">State Theory</span>
+            </div>
+          </div>
+          <div class="concept-card">
+            <div class="concept-stripe" style="background:var(--accent)"></div>
+            <div class="concept-body">
+              <div class="concept-term">Legitimacy</div>
+              <div class="concept-def">The normative belief that a ruling authority is rightful and ought to be obeyed. Weber identified three types: traditional, charismatic, and rational-legal.</div>
+              <span class="concept-tag" style="background:var(--accent-bg);color:var(--accent)">State Theory</span>
+            </div>
+          </div>
+          <div class="concept-card">
+            <div class="concept-stripe" style="background:var(--gold)"></div>
+            <div class="concept-body">
+              <div class="concept-term">Social Contract</div>
+              <div class="concept-def">The idea that individuals consent (implicitly or explicitly) to surrender some freedoms to a sovereign authority in exchange for protection and civil order.</div>
+              <span class="concept-tag" style="background:var(--gold-bg);color:var(--gold)">Political Theory</span>
+            </div>
+          </div>
+          <div class="concept-card">
+            <div class="concept-stripe" style="background:var(--green)"></div>
+            <div class="concept-body">
+              <div class="concept-term">Separation of Powers</div>
+              <div class="concept-def">Division of government authority among distinct branches (executive, legislative, judicial) to prevent tyranny through mutual accountability and checks and balances.</div>
+              <span class="concept-tag" style="background:var(--green-bg);color:var(--green)">Institutions</span>
+            </div>
+          </div>
+          <div class="concept-card">
+            <div class="concept-stripe" style="background:var(--accent)"></div>
+            <div class="concept-body">
+              <div class="concept-term">Federalism</div>
+              <div class="concept-def">A division of power between a central government and subnational units (states, provinces), each with constitutionally guaranteed authority in defined areas.</div>
+              <span class="concept-tag" style="background:var(--accent-bg);color:var(--accent)">Institutions</span>
+            </div>
+          </div>
+          <div class="concept-card">
+            <div class="concept-stripe" style="background:var(--blue)"></div>
+            <div class="concept-body">
+              <div class="concept-term">Electoral Systems</div>
+              <div class="concept-def">Rules determining how votes translate into seats. Key types: First Past the Post (FPTP), Proportional Representation (PR), and Alternative Vote / Ranked Choice.</div>
+              <span class="concept-tag" style="background:var(--blue-bg);color:var(--blue)">Institutions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Political Ideologies — Spectrum</div>
+        <div class="card">
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ideology</th>
+                  <th>State Role</th>
+                  <th>Economy</th>
+                  <th>Society</th>
+                  <th>Position</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Communism</td>
+                  <td>Vanguard state; eventual withering away</td>
+                  <td>State ownership of all means of production</td>
+                  <td>Classless; collectivist</td>
+                  <td><span class="pill pill-red">Far Left</span></td>
+                </tr>
+                <tr>
+                  <td>Socialism</td>
+                  <td>Strong redistributive state</td>
+                  <td>Mixed; emphasis on worker ownership</td>
+                  <td>Egalitarian; collective rights</td>
+                  <td><span class="pill pill-red">Left</span></td>
+                </tr>
+                <tr>
+                  <td>Social Democracy</td>
+                  <td>Welfare state within capitalism</td>
+                  <td>Market economy with regulation</td>
+                  <td>Pluralist; social rights</td>
+                  <td><span class="pill pill-blue">Centre-Left</span></td>
+                </tr>
+                <tr>
+                  <td>Liberalism</td>
+                  <td>Limited state; rule of law</td>
+                  <td>Free market with safeguards</td>
+                  <td>Individual rights; pluralism</td>
+                  <td><span class="pill pill-blue">Centre</span></td>
+                </tr>
+                <tr>
+                  <td>Conservatism</td>
+                  <td>Strong on order; limited welfare</td>
+                  <td>Market; property rights</td>
+                  <td>Traditional institutions; hierarchy</td>
+                  <td><span class="pill pill-gold">Centre-Right</span></td>
+                </tr>
+                <tr>
+                  <td>Libertarianism</td>
+                  <td>Minimal state (night-watchman)</td>
+                  <td>Laissez-faire capitalism</td>
+                  <td>Negative freedom; anti-paternalism</td>
+                  <td><span class="pill pill-gold">Right</span></td>
+                </tr>
+                <tr>
+                  <td>Fascism</td>
+                  <td>Authoritarian; ultra-nationalist</td>
+                  <td>Corporatist; state-directed</td>
+                  <td>Organic nation; anti-individualist</td>
+                  <td><span class="pill pill-red">Far Right</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ THINKERS ════════ -->
+    <div class="view" id="view-thinkers">
+      <div class="view-header">
+        <div class="view-eyebrow">Intellectual History</div>
+        <div class="view-title">Key Political Thinkers</div>
+        <div class="view-desc">The theorists whose ideas shaped how we understand power, justice, and the state.</div>
+      </div>
+
+      <div class="section-head">Classical Foundations</div>
+      <div class="grid-2">
+        <div class="thinker-card">
+          <div class="thinker-avatar">Pl</div>
+          <div>
+            <div class="thinker-name">Plato</div>
+            <div class="thinker-dates">428–348 BCE · Ancient Greece</div>
+            <div class="thinker-work"><em>The Republic</em>: justice as harmony; philosopher-kings should rule; typology of regimes from aristocracy to tyranny.</div>
+            <span class="thinker-tag" style="background:var(--gold-bg);color:var(--gold)">Political Theory</span>
+          </div>
+        </div>
+        <div class="thinker-card">
+          <div class="thinker-avatar">Ar</div>
+          <div>
+            <div class="thinker-name">Aristotle</div>
+            <div class="thinker-dates">384–322 BCE · Ancient Greece</div>
+            <div class="thinker-work"><em>Politics</em>: "man is a political animal"; comparative analysis of constitutions; classified 158 regimes; identified polity as the best practicable constitution.</div>
+            <span class="thinker-tag" style="background:var(--gold-bg);color:var(--gold)">Political Theory</span>
+            <span class="thinker-tag" style="background:var(--blue-bg);color:var(--blue)">Comparative</span>
+          </div>
+        </div>
+        <div class="thinker-card">
+          <div class="thinker-avatar">Ma</div>
+          <div>
+            <div class="thinker-name">Niccolò Machiavelli</div>
+            <div class="thinker-dates">1469–1527 · Florence</div>
+            <div class="thinker-work"><em>The Prince</em>: statecraft divorced from ethics; power must be maintained through both force and cunning; realism avant la lettre.</div>
+            <span class="thinker-tag" style="background:var(--accent-bg);color:var(--accent)">Realism</span>
+          </div>
+        </div>
+        <div class="thinker-card">
+          <div class="thinker-avatar">Ho</div>
+          <div>
+            <div class="thinker-name">Thomas Hobbes</div>
+            <div class="thinker-dates">1588–1679 · England</div>
+            <div class="thinker-work"><em>Leviathan</em>: life without sovereign authority is "nasty, brutish and short"; social contract requires absolute sovereign power to maintain peace.</div>
+            <span class="thinker-tag" style="background:var(--gold-bg);color:var(--gold)">Social Contract</span>
+          </div>
+        </div>
+        <div class="thinker-card">
+          <div class="thinker-avatar">Lo</div>
+          <div>
+            <div class="thinker-name">John Locke</div>
+            <div class="thinker-dates">1632–1704 · England</div>
+            <div class="thinker-work"><em>Two Treatises</em>: natural rights to life, liberty, property; government by consent; right to revolution if state violates rights. Foundation of liberal democracy.</div>
+            <span class="thinker-tag" style="background:var(--blue-bg);color:var(--blue)">Liberalism</span>
+            <span class="thinker-tag" style="background:var(--gold-bg);color:var(--gold)">Social Contract</span>
+          </div>
+        </div>
+        <div class="thinker-card">
+          <div class="thinker-avatar">Ro</div>
+          <div>
+            <div class="thinker-name">Jean-Jacques Rousseau</div>
+            <div class="thinker-dates">1712–1778 · Geneva/France</div>
+            <div class="thinker-work"><em>The Social Contract</em>: "general will" as basis of legitimate authority; popular sovereignty; human nature corrupted by society, not inherently sinful.</div>
+            <span class="thinker-tag" style="background:var(--gold-bg);color:var(--gold)">Social Contract</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Modern &amp; Contemporary</div>
+        <div class="grid-2">
+          <div class="thinker-card">
+            <div class="thinker-avatar">We</div>
+            <div>
+              <div class="thinker-name">Max Weber</div>
+              <div class="thinker-dates">1864–1920 · Germany</div>
+              <div class="thinker-work">Three types of legitimate authority: traditional, charismatic, rational-legal. State holds the monopoly on the legitimate use of physical force within a territory.</div>
+              <span class="thinker-tag" style="background:var(--accent-bg);color:var(--accent)">State Theory</span>
+            </div>
+          </div>
+          <div class="thinker-card">
+            <div class="thinker-avatar">Gr</div>
+            <div>
+              <div class="thinker-name">Antonio Gramsci</div>
+              <div class="thinker-dates">1891–1937 · Italy</div>
+              <div class="thinker-work">Concept of <em>hegemony</em>: ruling class maintains power through cultural and ideological consent, not only coercion. Civil society as the site of counter-hegemonic struggle.</div>
+              <span class="thinker-tag" style="background:var(--green-bg);color:var(--green)">Marxism</span>
+            </div>
+          </div>
+          <div class="thinker-card">
+            <div class="thinker-avatar">Ra</div>
+            <div>
+              <div class="thinker-name">John Rawls</div>
+              <div class="thinker-dates">1921–2002 · USA</div>
+              <div class="thinker-work"><em>A Theory of Justice</em>: "veil of ignorance" thought experiment; difference principle — inequalities permitted only if they benefit the least advantaged.</div>
+              <span class="thinker-tag" style="background:var(--blue-bg);color:var(--blue)">Liberal Theory</span>
+            </div>
+          </div>
+          <div class="thinker-card">
+            <div class="thinker-avatar">Hu</div>
+            <div>
+              <div class="thinker-name">Samuel Huntington</div>
+              <div class="thinker-dates">1927–2008 · USA</div>
+              <div class="thinker-work"><em>Clash of Civilizations</em>: post-Cold War conflict driven by cultural and religious identity rather than ideology. Influential and heavily contested.</div>
+              <span class="thinker-tag" style="background:var(--accent-bg);color:var(--accent)">IR Theory</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ SYSTEMS ════════ -->
+    <div class="view" id="view-systems">
+      <div class="view-header">
+        <div class="view-eyebrow">Comparative Politics</div>
+        <div class="view-title">Systems of Government</div>
+        <div class="view-desc">Structural typologies used to classify how political authority is organised and exercised.</div>
+      </div>
+
+      <div class="section-head">Executive–Legislative Relationships</div>
+      <div class="grid-2">
+        <div class="card">
+          <div style="font-family:'Libre Baskerville',serif;font-weight:700;margin-bottom:8px;">Presidential Systems</div>
+          <div style="font-size:0.78rem;color:var(--fg2);margin-bottom:12px;line-height:1.6;">President is head of state and government, elected independently of the legislature. Strict separation of powers; fixed terms; no vote of no confidence.</div>
+          <div style="font-size:0.72rem;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Examples</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-blue">USA</span>
+            <span class="pill pill-blue">Brazil</span>
+            <span class="pill pill-blue">Mexico</span>
+            <span class="pill pill-blue">Indonesia</span>
+            <span class="pill pill-blue">South Korea</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'Libre Baskerville',serif;font-weight:700;margin-bottom:8px;">Parliamentary Systems</div>
+          <div style="font-size:0.78rem;color:var(--fg2);margin-bottom:12px;line-height:1.6;">Government drawn from and accountable to the legislature. Prime minister can be removed by vote of no confidence; executive and legislative power fused.</div>
+          <div style="font-size:0.72rem;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Examples</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-gold">UK</span>
+            <span class="pill pill-gold">India</span>
+            <span class="pill pill-gold">Canada</span>
+            <span class="pill pill-gold">Germany</span>
+            <span class="pill pill-gold">Japan</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'Libre Baskerville',serif;font-weight:700;margin-bottom:8px;">Semi-Presidential Systems</div>
+          <div style="font-size:0.78rem;color:var(--fg2);margin-bottom:12px;line-height:1.6;">Dual executive: a directly-elected president coexists with a prime minister accountable to parliament. Power distribution varies greatly between cases (cohabitation possible).</div>
+          <div style="font-size:0.72rem;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Examples</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-green">France</span>
+            <span class="pill pill-green">Finland</span>
+            <span class="pill pill-green">Portugal</span>
+            <span class="pill pill-green">Taiwan</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'Libre Baskerville',serif;font-weight:700;margin-bottom:8px;">Authoritarian Systems</div>
+          <div style="font-size:0.78rem;color:var(--fg2);margin-bottom:12px;line-height:1.6;">Concentrated power without meaningful accountability. Sub-types include single-party states, military juntas, competitive authoritarian regimes, and personalised dictatorships.</div>
+          <div style="font-size:0.72rem;color:var(--fg3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Examples</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-red">China</span>
+            <span class="pill pill-red">Russia</span>
+            <span class="pill pill-red">Saudi Arabia</span>
+            <span class="pill pill-red">North Korea</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Democracy Index 2024 — Selected Countries (EIU Score / 10)</div>
+        <div class="card">
+          <div class="bar-chart">
+            <div class="bar-row"><div class="bar-label">Norway</div><div class="bar-track"><div class="bar-fill" style="width:98%;background:var(--green)"></div></div><div class="bar-val">9.81</div></div>
+            <div class="bar-row"><div class="bar-label">New Zealand</div><div class="bar-track"><div class="bar-fill" style="width:94%;background:var(--green)"></div></div><div class="bar-val">9.37</div></div>
+            <div class="bar-row"><div class="bar-label">Sweden</div><div class="bar-track"><div class="bar-fill" style="width:93%;background:var(--green)"></div></div><div class="bar-val">9.26</div></div>
+            <div class="bar-row"><div class="bar-label">Germany</div><div class="bar-track"><div class="bar-fill" style="width:87%;background:var(--green)"></div></div><div class="bar-val">8.68</div></div>
+            <div class="bar-row"><div class="bar-label">United Kingdom</div><div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--green)"></div></div><div class="bar-val">8.54</div></div>
+            <div class="bar-row"><div class="bar-label">United States</div><div class="bar-track"><div class="bar-fill" style="width:78%;background:var(--gold)"></div></div><div class="bar-val">7.85</div></div>
+            <div class="bar-row"><div class="bar-label">India</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--gold)"></div></div><div class="bar-val">7.02</div></div>
+            <div class="bar-row"><div class="bar-label">Brazil</div><div class="bar-track"><div class="bar-fill" style="width:68%;background:var(--gold)"></div></div><div class="bar-val">6.76</div></div>
+            <div class="bar-row"><div class="bar-label">Turkey</div><div class="bar-track"><div class="bar-fill" style="width:43%;background:var(--warn)"></div></div><div class="bar-val">4.29</div></div>
+            <div class="bar-row"><div class="bar-label">Russia</div><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--accent)"></div></div><div class="bar-val">2.22</div></div>
+            <div class="bar-row"><div class="bar-label">China</div><div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--accent)"></div></div><div class="bar-val">1.97</div></div>
+            <div class="bar-row"><div class="bar-label">North Korea</div><div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--accent)"></div></div><div class="bar-val">1.75</div></div>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:14px;font-size:0.7rem;color:var(--fg3);">
+            <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--green)"></span> Full democracy (8–10)</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--gold)"></span> Flawed democracy (6–8)</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--warn)"></span> Hybrid (4–6)</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--accent)"></span> Authoritarian (0–4)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ HISTORY ════════ -->
+    <div class="view" id="view-history">
+      <div class="view-header">
+        <div class="view-eyebrow">Political History</div>
+        <div class="view-title">Landmark Events</div>
+        <div class="view-desc">Key events in modern political history that shaped the international order and political thought.</div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="section-head">Modern State Formation</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1648</div>
+              <div class="timeline-event">Peace of Westphalia</div>
+              <div class="timeline-desc">Treaties ending the Thirty Years' War. Established the principle of state sovereignty and non-interference, creating the foundations of the modern state system.</div>
+            </div>
+            <div class="timeline-item gold">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1776</div>
+              <div class="timeline-event">American Declaration of Independence</div>
+              <div class="timeline-desc">Articulated Lockean natural rights in a founding document; first major modern democratic republic. Influential template for constitutions worldwide.</div>
+            </div>
+            <div class="timeline-item blue">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1789</div>
+              <div class="timeline-event">French Revolution</div>
+              <div class="timeline-desc">Overthrew the ancien régime; introduced mass political mobilisation, nationalism, and ideological politics (left-right spectrum originated in the National Assembly).</div>
+            </div>
+            <div class="timeline-item green">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1848</div>
+              <div class="timeline-event">Revolutions across Europe / Communist Manifesto</div>
+              <div class="timeline-desc">Wave of liberal and nationalist uprisings. Marx and Engels publish their critique of capitalism and call for working-class revolution.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1917</div>
+              <div class="timeline-event">Russian Revolution</div>
+              <div class="timeline-desc">Bolshevik seizure of power creates first communist state. Defined the ideological conflict of the 20th century and catalysed global revolutionary movements.</div>
+            </div>
+            <div class="timeline-item gold">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1945</div>
+              <div class="timeline-event">End of WWII &amp; UN Founding</div>
+              <div class="timeline-desc">Post-war order established: UN Charter, Nuremberg principles, beginning of decolonisation wave, and bipolar Cold War competition between USA and USSR.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-head">Contemporary Order</div>
+          <div class="timeline">
+            <div class="timeline-item blue">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1948</div>
+              <div class="timeline-event">Universal Declaration of Human Rights</div>
+              <div class="timeline-desc">UN General Assembly adopts UDHR; first international articulation of individual rights as a global norm, laying the foundation for international human rights law.</div>
+            </div>
+            <div class="timeline-item green">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1957–1975</div>
+              <div class="timeline-event">African Decolonisation Wave</div>
+              <div class="timeline-desc">Rapid decolonisation transforms the international system; over 40 African states gain independence, fundamentally reshaping the UN and global power dynamics.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">1989–1991</div>
+              <div class="timeline-event">End of the Cold War</div>
+              <div class="timeline-desc">Fall of the Berlin Wall (1989), dissolution of the Soviet Union (1991). Third Wave of democratisation; "unipolar moment" of US hegemony begins.</div>
+            </div>
+            <div class="timeline-item gold">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2001</div>
+              <div class="timeline-event">9/11 and the War on Terror</div>
+              <div class="timeline-desc">Attacks reshape security policy, international law, and civil liberties globally. Non-state actors (Al-Qaeda, then ISIS) emerge as central IR actors.</div>
+            </div>
+            <div class="timeline-item blue">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2008–2010</div>
+              <div class="timeline-event">Global Financial Crisis</div>
+              <div class="timeline-desc">Economic crisis accelerates shifts in political economy, fuels populist and anti-establishment movements in Europe and the Americas, reshaping party systems.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-year">2016–present</div>
+              <div class="timeline-event">Democratic Backsliding &amp; Populism</div>
+              <div class="timeline-desc">V-Dem records more countries autocratising than democratising for the first time since tracking began. Populist governments challenge liberal norms in multiple democracies.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ CAREERS ════════ -->
+    <div class="view" id="view-careers">
+      <div class="view-header">
+        <div class="view-eyebrow">After Your Degree</div>
+        <div class="view-title">Careers in Political Science</div>
+        <div class="view-desc">Political science graduates work across government, law, international organisations, journalism, research, and the private sector. The degree trains analytical reasoning, writing, and argumentation — transferable to most knowledge-work fields.</div>
+      </div>
+
+      <div class="section-head">Career Pathways</div>
+      <div class="grid-2">
+
+        <div class="card" style="border-left:3px solid var(--accent);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--accent-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">🏛</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">Government &amp; Public Service</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">Work directly inside the machinery of the state — policy design, administration, and elected office.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-red">Civil Servant</span><span class="pill pill-red">Policy Analyst</span><span class="pill pill-red">MP / Councillor</span><span class="pill pill-red">Political Adviser</span><span class="pill pill-red">Diplomatic Service</span>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--blue);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--blue-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">🌐</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">International Organisations</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">Work for multilateral bodies tackling global challenges — peacekeeping, development, and human rights.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-blue">UN Agencies</span><span class="pill pill-blue">World Bank</span><span class="pill pill-blue">IMF</span><span class="pill pill-blue">EU Institutions</span><span class="pill pill-blue">UNHCR / UNICEF</span>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--gold);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--gold-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">⚖️</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">Law</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">A strong foundation for law school. Many graduates practise in public law, human rights, or constitutional litigation.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-gold">Barrister / Solicitor</span><span class="pill pill-gold">Human Rights Law</span><span class="pill pill-gold">Public Law</span><span class="pill pill-gold">International Law</span>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--green);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--green-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">📰</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">Journalism &amp; Media</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">Political analysis and clear writing translate directly to political journalism, broadcasting, and commentary.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-green">Political Correspondent</span><span class="pill pill-green">Foreign Affairs Editor</span><span class="pill pill-green">Broadcaster</span><span class="pill pill-green">Fact-Checker</span>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--accent);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--accent-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">🔬</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">Research &amp; Think Tanks</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">Produce independent analysis and policy recommendations for governments, NGOs, and the public. Often requires postgraduate study.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-red">Research Fellow</span><span class="pill pill-red">Policy Researcher</span><span class="pill pill-red">Chatham House</span><span class="pill pill-red">Brookings</span><span class="pill pill-red">Academia (PhD)</span>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--blue);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--blue-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">🤝</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">NGOs &amp; Campaigning</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">Advocacy, humanitarian work, and rights campaigns. Graduates bring policy analysis, stakeholder engagement, and communication skills.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-blue">Amnesty International</span><span class="pill pill-blue">Oxfam</span><span class="pill pill-blue">Political Campaigner</span><span class="pill pill-blue">Lobbyist</span>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--gold);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--gold-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">📊</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">Consulting &amp; Private Sector</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">Political risk analysis, government affairs, and management consulting draw on analytical and communication skills.</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-gold">Political Risk Analyst</span><span class="pill pill-gold">Government Affairs</span><span class="pill pill-gold">Management Consulting</span>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--green);">
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:38px;height:38px;background:var(--green-bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">🎓</div>
+            <div>
+              <div style="font-family:'Libre Baskerville',serif;font-weight:700;color:var(--fg);margin-bottom:3px;">Teaching &amp; Education</div>
+              <div style="font-size:0.75rem;color:var(--fg2);line-height:1.6;">A-level Politics teachers are in demand. University lecturing is available via a postgraduate route (MA + PhD).</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span class="pill pill-green">A-Level Teacher</span><span class="pill pill-green">University Lecturer</span><span class="pill pill-green">Curriculum Designer</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Skills You Develop</div>
+        <div class="card">
+          <div class="grid-3" style="gap:10px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:5px;">Analysis</div>
+              <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Evaluating evidence, constructing arguments, critiquing sources, and synthesising information from multiple perspectives.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:5px;">Writing</div>
+              <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Clear, structured, evidence-based writing — essays, policy briefs, briefing notes, and reports under pressure.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:5px;">Research Methods</div>
+              <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Quantitative and qualitative methods, data literacy, and the ability to design a research question and evaluate evidence.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:5px;">Communication</div>
+              <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Presenting and defending arguments verbally, translating complex ideas for non-specialist audiences.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:5px;">Global Literacy</div>
+              <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Understanding of international institutions, geopolitics, comparative systems, and cross-cultural political contexts.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:5px;">Critical Thinking</div>
+              <div style="font-size:0.78rem;color:var(--fg2);line-height:1.6;">Recognising assumptions, identifying logical fallacies, and evaluating competing normative and empirical claims.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-head">Further Study Routes</div>
+        <div class="card">
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead>
+                <tr><th>Qualification</th><th>Duration</th><th>Purpose</th><th>Destinations</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>MA / MSc Political Science</td><td class="mono">1 yr</td><td>Specialise or deepen knowledge</td><td>Think tanks, IGOs, PhD, civil service fast stream</td></tr>
+                <tr><td>MA International Relations</td><td class="mono">1–2 yr</td><td>Focus on global affairs and diplomacy</td><td>Foreign ministry, UN, NGOs, journalism</td></tr>
+                <tr><td>MPA / MPP</td><td class="mono">1–2 yr</td><td>Professional policy and public administration</td><td>Government, multilaterals, consultancy</td></tr>
+                <tr><td>GDL + LPC / Bar Course</td><td class="mono">2–3 yr</td><td>Convert to law</td><td>Barrister / Solicitor (human rights, public law)</td></tr>
+                <tr><td>PGCE (Politics / Social Science)</td><td class="mono">1 yr</td><td>Secondary school teaching qualification</td><td>A-level Politics teacher</td></tr>
+                <tr><td>PhD Political Science</td><td class="mono">3–5 yr</td><td>Original research; academic career</td><td>University lecturer, senior research fellow</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function toggleTheme() {
+  const root = document.documentElement;
+  const cur = root.getAttribute('data-theme');
+  if (!cur) {
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+  } else {
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  }
+}
+</script>
+
+</body></html>
